@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Individuell Inlämningsuppgift</title>
+    <h2>JavaScript 1</h2>
+    <h3>Formulä:</h3>
+  </head>
+
+  <body>
+    <form id="userName">
+      <label for="input">Användarens namn:</label>
+      <input type="text" id="userOne" placeholder="Användarens namn" />
+      <br />
+      <label for="input">Användarens vän namn:</label>
+      <input type="text" id="usertwo" placeholder="Väns namn" />
+    </form>
+
+    <button type="button" onclick="mynameFunc1()">Lämna in</button>
+    <br />
+    <br />
+    <form id="times">
+      <label for="number">Ange antal du vill bli hälsad:</label>
+      <input type="number" id="numberX" />
+    </form>
+
+    <form method="post">
+      <div>
+        <label for="confiramtion">Yes:</label>
+        <input
+          class="messagecheckbox"
+          type="checkbox"
+          value="1"
+          id="yes"
+          onclick="buttonDisable(this)"
+        />
+        <br />
+      </div>
+
+      <div>
+        <button
+          type="button"
+          id="submit_button"
+          disabled="true"
+          onclick="mynameFunc2()"
+        >
+          Submit
+        </button>
+        <br />
+      </div>
+    </form>
+    <br />
+    <br />
+
+    <form id="password">
+      <input type="password" id="pass" placeholder="Lösenord:" />
+    </form>
+
+    <button type="button" onclick="password()">Check!</button>
+
+    <p id="output"></p>
+
+    <script type="text/javascript">
+      var namesEmpty = true;
+
+      //function för att kontrollera lösenor
+      function password() {
+        //hämtar input
+        var passW = document.getElementById("pass").value;
+        //använder mig av variabler för att skriva ut text strings
+        var rigthPassW = "Rätt!";
+        var wrongPassW = "Fel... försök igen...";
+
+        if (passW === "KYH") {
+          //om input stämmer med lösenord
+          document.getElementById("output").innerHTML = rigthPassW;
+        } else {
+          //annars fels svar
+          document.getElementById("output").innerHTML = wrongPassW;
+        } //tömmer input
+        document.getElementById("pass").value = "";
+      }
+
+      //Hör att hantera toma utryme från användaren
+      function replaceSpace(value) {
+        return value.replace(/\s/g, "");
+      }
+      //function för att se om inmatade strängar är tomma då är det TRUE sant
+      function checkIsNamesEmpty() {
+        var un = document.getElementById("userOne").value;
+        var fn = document.getElementById("usertwo").value;
+        namesEmpty =
+          this.replaceSpace(un) === "" && this.replaceSpace(fn) === "";
+      }
+
+      //med denna function hämtar vi input från användaren och går igenom dem
+      //och skriver ut hälsningar första omgång
+      function mynameFunc1() {
+        //är det "true"
+        this.checkIsNamesEmpty();
+        // skrivs "Namn saknas"
+        if (namesEmpty) {
+          //pop up fönster
+          window.alert("Namn saknas!!");
+        } else {
+          //annars skrivs hälsninar ut
+          document.getElementById("output").innerHTML = this.getNames();
+        }
+      }
+      //function för att SKTIVA UT hälsning
+      //tömmer input fälten efter att ha gjort hälsning antal gånge
+      function mynameFunc2() {
+        var un = document.getElementById("userOne").value;
+        var fn = document.getElementById("usertwo").value;
+        if (un === "" && fn === "") {
+          //kontrol av empty input for att inte hamna i en loop
+          window.alert("Namn saknas!!");
+        } else {
+          //utför hälsning och tömmer inputs
+          document.getElementById("output").innerHTML = this.greetNameTimes();
+          document.getElementById("numberX").value = "";
+          document.getElementById("userOne").value = "";
+          document.getElementById("usertwo").value = "";
+        }
+      }
+
+      function buttonDisable(checkbox) {
+        //om checkbox har blivigt checkad
+        if (checkbox.checked) {
+          //Sätt disabled property till FALSE och gör button "enable" tillgänglig.
+          document.getElementById("submit_button").disabled = false;
+        } else {
+          //anars, disable gör button submit inte tillgänglig.
+          document.getElementById("submit_button").disabled = true;
+        }
+      }
+
+      //function för att repetera hälsning antal gånger vi får från användaren.
+      function greetNameTimes() {
+        //kontrolerar check-box
+        var boxAnsw = document.getElementById("yes").checked;
+        //hämtar inmatad nummer
+        var numberX = document.getElementById("numberX").value;
+        var newName = "";
+
+        //om checkbox är true och nummer > 0
+        if (boxAnsw && numberX > 0) {
+          //metod "repeat" för att upprepa "this.getNames" metod
+          newName = this.getNames().repeat(numberX);
+        }
+        return newName;
+      }
+
+      //med denna function bygger vi hälsningen
+      function getNames() {
+        //hämtar namn lagra dem i nya variablar
+        var name1 = document.getElementById("userOne").value;
+        var name2 = document.getElementById("usertwo").value;
+        var names = [name1, name2];
+
+        //push nya namn string in i array
+        names.push("Marcus", "Cihan");
+        var newText = "";
+        //vi går igenom alla inmatade namn "item" med denna en forEach loop
+        names.forEach((item) => {
+          //vi kan hantera fel vid inmatad namn med ett "lamda" utryck
+          if (this.replaceSpace(item) !== "") {
+            newText += "Hejsan " + item + "<br>";
+          }
+        });
+        return newText;
+      }
+    </script>
+  </body>
+</html>
